@@ -19,9 +19,28 @@ const dbConnected = async (req, res) => {
   try {
     await client.connect();
     console.log("Database Connected...");
-  } catch (error) {}
+  } catch (error) {
+    console.log("Can't Connected database!!!");
+  }
 };
 dbConnected();
+// ? db collection
+const Categories = client.db("BOOK_LAND_SHOP").collection("Categories");
+// ! get all categories data
+app.get("/categories", async (req, res) => {
+  try {
+    const result = await Categories.find({}).toArray();
+    res.send({
+      status: true,
+      data: result,
+    });
+  } catch (error) {
+    res.send({
+      status: false,
+      error: error.message,
+    });
+  }
+});
 // ? server create
 app.get("/", async (req, res) => {
   try {
